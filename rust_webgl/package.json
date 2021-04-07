@@ -1,0 +1,20 @@
+{
+    "scripts": {
+        "serve": "webpack-dev-server",
+        "build-debug": "cargo +nightly build --target wasm32-unknown-unknown && wasm-bindgen target/wasm32-unknown-unknown/debug/rust_webgl.wasm --out-dir ."
+    },
+    "devDependencies": {
+        "@babel/core": "^7.12.13",
+        "@babel/preset-env": "^7.12.13",
+        "babel-core": "^6.0.20",
+        "babel-loader": "^6.4.1",
+        "babel-preset-react": "^6.0.15",
+        "babel-preset-stage-0": "^6.0.15",
+        "terser-webpack-plugin": "^5.1.1",
+        "webpack": "^4.46.0",
+        "webpack-cli": "3.0.8",
+        "webpack-dev-server": "^3.1.4",
+        "babel-preset-env": "^1.7.0",
+        "cacache": "^15.0.5"
+    }
+}
