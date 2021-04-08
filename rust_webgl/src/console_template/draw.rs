@@ -42,24 +42,39 @@ impl Canvas {
       // height,
     }
   }
+  pub fn clear_layout(&self, width: i32, height: i32, scale: i32) {
+    self.ctx.clear_rect(0.0,0.0,height.into(), width.into());
+  }
 
-  pub fn prepare_layout(&self, width: i32, height: i32) {
+  pub fn prepare_layout(&self, width: i32, height: i32, scale: i32) {
     for cordinate_y in 0..height {
       for cordinate_x in 0..width {
-        self.ctx.move_to((cordinate_x as f64) * 50.0, (cordinate_y as f64*250.0) +0.0);
-        self
-          .ctx
-          .line_to(((cordinate_x + 10) as f64) * 50.0, (cordinate_y as f64*250.0) + 250.0 );
-        self.ctx.move_to(((-cordinate_x - 1) as f64) * 50.0, (cordinate_y as f64*250.0) +0.0);
-        self
-          .ctx
-          .line_to(((-cordinate_x - 1 + 10) as f64) * 50.0, (cordinate_y as f64*250.0)+ 250.0);
+        self.ctx.move_to(
+          (cordinate_x as f64) * scale as f64 * 50.0,
+          (cordinate_y as f64 * scale as f64 * 250.0) + 0.0,
+        );
+        self.ctx.line_to(
+          ((cordinate_x + 10) as f64) * scale as f64 * 50.0,
+          (cordinate_y as f64 * scale as f64 * 250.0) + 250.0 * scale as f64,
+        );
+        self.ctx.move_to(
+          ((-cordinate_x - 1) as f64) * scale as f64 * 50.0,
+          (cordinate_y as f64 * scale as f64 * 250.0) + 0.0,
+        );
+        self.ctx.line_to(
+          ((-cordinate_x - 1 + 10) as f64) * scale as f64 * 50.0,
+          (cordinate_y as f64 * scale as f64 * 250.0) + 250.0 * scale as f64,
+        );
       }
       for cordinate_x in 0..width {
-        self.ctx.move_to((cordinate_x as f64) * 50.0, (cordinate_y as f64*250.0) +0.0);
-        self
-          .ctx
-          .line_to(((cordinate_x - 10) as f64) * 50.0, (cordinate_y as f64*250.0)+ 250.0);
+        self.ctx.move_to(
+          (cordinate_x as f64) * scale as f64 * 50.0,
+          (cordinate_y as f64 * scale as f64 * 250.0) + 0.0,
+        );
+        self.ctx.line_to(
+          ((cordinate_x - 10) as f64) * scale as f64 * 50.0,
+          (cordinate_y as f64 * scale as f64 * 250.0) + 250.0 * scale as f64,
+        );
       }
     }
     self.ctx.stroke();
