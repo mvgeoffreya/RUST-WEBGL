@@ -2,7 +2,7 @@ use super::init::{Canvas, compile_shader, link_program};
 use wasm_bindgen::prelude::*;
 use web_sys::WebGlRenderingContext;
 
-pub fn draw_square(canvas: &Canvas, scale: i32) -> Result<i32, JsValue> {
+pub fn draw_square(canvas: &Canvas, scale: i32, x:f32, y:f32, z:f32) -> Result<i32, JsValue> {
   let colors = [0.0, 0.0, 0.1, 0.1, 0.0, 0.0, 0.0, 0.1, 0.0, 0.1, 0.0, 0.1];
   let ctx: &WebGlRenderingContext = &canvas.ctx;
   // colors
@@ -19,10 +19,10 @@ pub fn draw_square(canvas: &Canvas, scale: i32) -> Result<i32, JsValue> {
   // colors
   // vertex
   let vertices = [
-    -0.05*scale as f32, 0.05*scale as f32, 0.00, 
-    -0.1*scale as f32, -0.00*scale as f32, 0.00,
-     -0.05*scale as f32, -0.05*scale as f32, 0.00, 
-     0.00*scale as f32, 0.00*scale as f32, 0.00,
+    -(0.05/10.0)*scale as f32, (0.05/10.0)*scale as f32, 0.00, 
+    -(0.1/10.0)*scale as f32, -(0.00/10.0)*scale as f32, 0.00,
+     -(0.05/10.0)*scale as f32, -(0.05/10.0)*scale as f32, 0.00, 
+     (0.00/10.0)*scale as f32, (0.00/10.0)*scale as f32, 0.00,
   ];
 
   let vertex_buffer = ctx.create_buffer().ok_or("failed to create buffer")?;
@@ -61,8 +61,9 @@ pub fn draw_square(canvas: &Canvas, scale: i32) -> Result<i32, JsValue> {
       attribute vec3 coordinates;
       attribute vec3 color;
       varying vec3 vColor;
+      uniform vec4 translation;
       void main() {
-          gl_Position = vec4(coordinates, 1.0);
+          gl_Position = vec4(coordinates, 1.0) + translation;
           vColor = color;
       }
   "#,
@@ -78,10 +79,13 @@ pub fn draw_square(canvas: &Canvas, scale: i32) -> Result<i32, JsValue> {
       }
   "#,
   )?;
+
+  
   let program = link_program(&ctx, &vert_shader, &frag_shader)?;
   ctx.use_program(Some(&program));
   
-
+  let translation = ctx.get_uniform_location(&program, "translation").ok_or("failed to get uniform location")?;
+  ctx.uniform4f(Some(&translation), x, y, z, 0.0);
   ctx.bind_buffer(WebGlRenderingContext::ARRAY_BUFFER, Some(&vertex_buffer));
   ctx.bind_buffer(WebGlRenderingContext::ELEMENT_ARRAY_BUFFER, Some(&index_buffer));
 

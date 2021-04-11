@@ -106,12 +106,15 @@ function passStringToWasm0(arg, malloc, realloc) {
 /**
 * @param {string} att_id
 * @param {number} scale
+* @param {number} x
+* @param {number} y
+* @param {number} z
 * @returns {number}
 */
-export function draw_it(att_id, scale) {
+export function draw_it(att_id, scale, x, y, z) {
     var ptr0 = passStringToWasm0(att_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
-    var ret = wasm.draw_it(ptr0, len0, scale);
+    var ret = wasm.draw_it(ptr0, len0, scale, x, y, z);
     return ret;
 }
 
@@ -245,12 +248,21 @@ export const __wbg_getShaderParameter_2de7da3dc3ad791a = function(arg0, arg1, ar
     return addHeapObject(ret);
 };
 
+export const __wbg_getUniformLocation_8ef86decd2ceb6a0 = function(arg0, arg1, arg2, arg3) {
+    var ret = getObject(arg0).getUniformLocation(getObject(arg1), getStringFromWasm0(arg2, arg3));
+    return isLikeNone(ret) ? 0 : addHeapObject(ret);
+};
+
 export const __wbg_linkProgram_b060b6f5c6419695 = function(arg0, arg1) {
     getObject(arg0).linkProgram(getObject(arg1));
 };
 
 export const __wbg_shaderSource_e00c8c2b41679a01 = function(arg0, arg1, arg2, arg3) {
     getObject(arg0).shaderSource(getObject(arg1), getStringFromWasm0(arg2, arg3));
+};
+
+export const __wbg_uniform4f_6f8a42b156c1efb5 = function(arg0, arg1, arg2, arg3, arg4, arg5) {
+    getObject(arg0).uniform4f(getObject(arg1), arg2, arg3, arg4, arg5);
 };
 
 export const __wbg_useProgram_ad5593b87b2aec4f = function(arg0, arg1) {

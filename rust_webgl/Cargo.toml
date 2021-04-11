@@ -28,4 +28,5 @@ features = [
   'WebGlProgram',
   'WebGlShader',
   'Window',
+  'WebGlUniformLocation'
 ]

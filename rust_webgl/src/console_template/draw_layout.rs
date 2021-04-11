@@ -2,7 +2,7 @@ use super::init::{compile_shader, link_program, Canvas};
 use wasm_bindgen::prelude::*;
 use web_sys::WebGlRenderingContext;
 
-pub fn draw_layout(canvas: &Canvas, scale: i32) -> Result<i32, JsValue> {
+pub fn draw_layout(canvas: &Canvas, scale: i32, x:f32, y:f32, z:f32) -> Result<i32, JsValue> {
   let mut vertices = Vec::new();
   let ctx: &WebGlRenderingContext = &canvas.ctx;
   for points in 0..200 {
@@ -31,8 +31,9 @@ pub fn draw_layout(canvas: &Canvas, scale: i32) -> Result<i32, JsValue> {
     WebGlRenderingContext::VERTEX_SHADER,
     r#"
     attribute vec2 coordinates;
+    uniform vec4 translation;
     void main() {
-        gl_Position = vec4(coordinates, 0.0, 1.0);
+        gl_Position = vec4(coordinates, 0.0, 1.0) + translation;
         }
     "#,
   )?;
@@ -47,6 +48,8 @@ pub fn draw_layout(canvas: &Canvas, scale: i32) -> Result<i32, JsValue> {
   )?;
   let program = link_program(&ctx, &vert_shader, &frag_shader)?;
   ctx.use_program(Some(&program));
+  let translation = ctx.get_uniform_location(&program, "translation").ok_or("failed to get uniform location")?;
+  ctx.uniform4f(Some(&translation), x, y, z, 0.0);
   let buffer = ctx.create_buffer().ok_or("failed to create buffer")?;
   ctx.bind_buffer(WebGlRenderingContext::ARRAY_BUFFER, Some(&buffer));
   unsafe {

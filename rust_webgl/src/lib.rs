@@ -18,9 +18,9 @@ use console_template::{draw_layout::draw_layout, draw_square::draw_square, init:
 //   Ok(draw_layout?)
 // }
 #[wasm_bindgen]
-pub fn draw_it(att_id: &str, scale: i32) -> Result<i32, JsValue> {
+pub fn draw_it(att_id: &str, scale: i32, x:f32, y:f32, z:f32) -> Result<i32, JsValue> {
   let canvas = Canvas::new(att_id)?;
-  let draw_square = draw_square(&canvas, scale);
-  let draw_layout = draw_layout(&canvas, scale);
+  let draw_square = draw_square(&canvas, scale, x, y, z);
+  let draw_layout = draw_layout(&canvas, scale, x, y, z);
   Ok(draw_layout?)
 }
