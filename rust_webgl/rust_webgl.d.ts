@@ -5,4 +5,4 @@
 * @param {number} scale
 * @returns {number}
 */
-export function start(att_id: string, scale: number): number;
+export function draw_it(att_id: string, scale: number): number;

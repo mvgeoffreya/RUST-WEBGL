@@ -108,10 +108,10 @@ function passStringToWasm0(arg, malloc, realloc) {
 * @param {number} scale
 * @returns {number}
 */
-export function start(att_id, scale) {
+export function draw_it(att_id, scale) {
     var ptr0 = passStringToWasm0(att_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len0 = WASM_VECTOR_LEN;
-    var ret = wasm.start(ptr0, len0, scale);
+    var ret = wasm.draw_it(ptr0, len0, scale);
     return ret;
 }
 
@@ -206,6 +206,10 @@ export const __wbg_drawArrays_fd5a0fffff805903 = function(arg0, arg1, arg2, arg3
     getObject(arg0).drawArrays(arg1 >>> 0, arg2, arg3);
 };
 
+export const __wbg_drawElements_19a4ea67a2f14d44 = function(arg0, arg1, arg2, arg3, arg4) {
+    getObject(arg0).drawElements(arg1 >>> 0, arg2, arg3 >>> 0, arg4);
+};
+
 export const __wbg_enableVertexAttribArray_eff1f71734ec0c24 = function(arg0, arg1) {
     getObject(arg0).enableVertexAttribArray(arg1 >>> 0);
 };
@@ -296,6 +300,11 @@ export const __wbg_global_c3c8325ae8c7f1a9 = handleError(function() {
     var ret = global.global;
     return addHeapObject(ret);
 });
+
+export const __wbg_newwithbyteoffsetandlength_9eb3327abeac2c52 = function(arg0, arg1, arg2) {
+    var ret = new Uint16Array(getObject(arg0), arg1 >>> 0, arg2 >>> 0);
+    return addHeapObject(ret);
+};
 
 export const __wbg_newwithbyteoffsetandlength_ab2b53c614369e0e = function(arg0, arg1, arg2) {
     var ret = new Float32Array(getObject(arg0), arg1 >>> 0, arg2 >>> 0);
