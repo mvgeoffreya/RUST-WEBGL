@@ -1,7 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+* @param {string} att_id
 * @param {number} scale
-* @returns {Float32Array}
+* @returns {number}
 */
-export function start(scale: number): Float32Array;
+export function start(att_id: string, scale: number): number;
