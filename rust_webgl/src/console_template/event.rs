@@ -4,6 +4,7 @@ use crate::wasm_bindgen::JsCast;
 use crate::Canvas;
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsValue;
+use std::rc::Rc;
 use web_sys::console;
 pub struct Movement {
   pub x: f32,
@@ -11,21 +12,26 @@ pub struct Movement {
 }
 
 pub fn on_wheel_event(
-  canvas: &Canvas,
+  canvas: Canvas,
   mut x: f32,
   mut y: f32,
   scale: i32,
 ) -> Result<Movement, JsValue> {
+  let canvas = Rc::new(canvas);
+  let canvas1 = canvas.clone();
   let wheel_callback = Closure::wrap(Box::new(move |event: web_sys::WheelEvent| {
     x = x - (event.delta_x() / 1000.0) as f32;
-    y = y - (event.delta_y() / 1000.0) as f32;
+    y = y + (event.delta_y() / 1000.0) as f32;
+    let _draw_square = draw_square(&canvas, scale, x, y, 0.0);
+   let _draw_layout = draw_layout(&canvas, scale, x, y, 0.0);
     console::log_1(&x.into());
+
   }) as Box<dyn FnMut(_)>);
-  canvas
+  canvas1
     .canvas
-    .add_event_listener_with_callback("wheel", wheel_callback.as_ref().unchecked_ref())?;
-  let _draw_square = draw_square(&canvas, scale, x, y, 0.0);
-  let _draw_layout = draw_layout(&canvas, scale, x, y, 0.0);
+    .add_event_listener_with_callback("wheel", 
+    wheel_callback.as_ref().unchecked_ref()
+  )?;
   wheel_callback.forget();
 
   Ok(Movement { x, y })
