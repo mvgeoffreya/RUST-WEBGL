@@ -268,6 +268,10 @@ export const __wbg_drawArrays_fd5a0fffff805903 = function(arg0, arg1, arg2, arg3
     getObject(arg0).drawArrays(arg1 >>> 0, arg2, arg3);
 };
 
+export const __wbg_drawElements_19a4ea67a2f14d44 = function(arg0, arg1, arg2, arg3, arg4) {
+    getObject(arg0).drawElements(arg1 >>> 0, arg2, arg3 >>> 0, arg4);
+};
+
 export const __wbg_enableVertexAttribArray_eff1f71734ec0c24 = function(arg0, arg1) {
     getObject(arg0).enableVertexAttribArray(arg1 >>> 0);
 };
@@ -358,6 +362,11 @@ export const __wbg_global_c3c8325ae8c7f1a9 = handleError(function() {
     return addHeapObject(ret);
 });
 
+export const __wbg_newwithbyteoffsetandlength_9eb3327abeac2c52 = function(arg0, arg1, arg2) {
+    var ret = new Uint16Array(getObject(arg0), arg1 >>> 0, arg2 >>> 0);
+    return addHeapObject(ret);
+};
+
 export const __wbg_newwithbyteoffsetandlength_ab2b53c614369e0e = function(arg0, arg1, arg2) {
     var ret = new Float32Array(getObject(arg0), arg1 >>> 0, arg2 >>> 0);
     return addHeapObject(ret);
@@ -401,7 +410,7 @@ export const __wbindgen_memory = function() {
     return addHeapObject(ret);
 };
 
-export const __wbindgen_closure_wrapper194 = function(arg0, arg1, arg2) {
+export const __wbindgen_closure_wrapper224 = function(arg0, arg1, arg2) {
     var ret = makeMutClosure(arg0, arg1, 6, __wbg_adapter_20);
     return addHeapObject(ret);
 };
