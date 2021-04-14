@@ -1,16 +1,19 @@
-use crate::console_template::draw_layout::GridLayout;
-use crate::console_template::draw_square::Square;
-// use crate::console_template::draw_layout::init_layout;
-// use crate::console_template::draw_square::init_square;
-// use crate::draw_layout;
-use std::rc::Rc;
+use crate::console_template::draw_square::draw_square;
+use crate::console_template::draw_layout::draw_layout;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlCanvasElement;
 use web_sys::{WebGlProgram, WebGlRenderingContext, WebGlShader};
+
+use super::draw_layout::ImageLayout;
+use super::draw_square::Square;
 pub struct Canvas {
   pub canvas: HtmlCanvasElement,
   pub ctx: WebGlRenderingContext,
+  pub program: web_sys::WebGlProgram,
+  pub translation: web_sys::WebGlUniformLocation,
+  pub location: u32,
+  pub color: u32,
 }
 
 impl Canvas {
@@ -22,19 +25,40 @@ impl Canvas {
       .get_context("webgl")?
       .unwrap()
       .dyn_into::<WebGlRenderingContext>()?;
-    ctx.clear_color(1.0, 1.0, 1.0, 1.0);
-    ctx.clear(WebGlRenderingContext::COLOR_BUFFER_BIT);
+    // let vert_shader = compile_shader(
+    //   &ctx,
+    //   WebGlRenderingContext::VERTEX_SHADER,
+    //   r#"
+    //       attribute vec3 coordinates;
+    //       attribute vec3 color;
+    //       varying vec3 vColor;
+    //       uniform vec4 translation;
+    //       void main() {
+    //           gl_Position = vec4(coordinates, 1.0) + translation;
+    //           vColor = color;
+    //       }
+    //   "#,
+    // )?;
+    // let frag_shader = compile_shader(
+    //   &ctx,
+    //   WebGlRenderingContext::FRAGMENT_SHADER,
+    //   r#"
+    //       precision mediump float;
+    //       varying vec3 vColor;
+    //       void main() {
+    //         gl_FragColor = vec4(vColor, 1.);
+    //       }
+    //   "#,
+    // )?;
+
     let vert_shader = compile_shader(
       &ctx,
       WebGlRenderingContext::VERTEX_SHADER,
       r#"
-        attribute vec3 coordinates;
-        attribute vec3 color;
-        varying vec3 vColor;
-        uniform vec4 translation;
-        void main() {
-            gl_Position = vec4(coordinates, 1.0) + translation;
-            vColor = color;
+    attribute vec2 coordinates;
+    uniform vec4 translation;
+    void main() {
+        gl_Position = vec4(coordinates, 0.0, 1.0) + translation;
         }
     "#,
     )?;
@@ -42,32 +66,41 @@ impl Canvas {
       &ctx,
       WebGlRenderingContext::FRAGMENT_SHADER,
       r#"
-        precision mediump float;
-        varying vec3 vColor;
-        void main() {
-          gl_FragColor = vec4(vColor, 1.);
+    void main() {
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
         }
-    "#,
+      "#,
     )?;
     let program = link_program(&ctx, &vert_shader, &frag_shader)?;
     ctx.use_program(Some(&program));
+    let location: u32 = ctx.get_attrib_location(&program, "coordinates") as u32;
+    let color = ctx.get_attrib_location(&program, "color") as u32;
     let translation = ctx
       .get_uniform_location(&program, "translation")
       .ok_or("failed to get uniform location")?;
-    ctx.uniform4f(Some(&translation), 0.0, 0.0, 0.0, 0.0);
-    let program = link_program(&ctx, &vert_shader, &frag_shader)?;
-    ctx.use_program(Some(&program));
-    Ok(Canvas { canvas, ctx })
+    ctx.clear_color(1.0, 1.0, 1.0, 1.0);
+    ctx.clear(WebGlRenderingContext::COLOR_BUFFER_BIT);
+    Ok(Canvas {
+      canvas,
+      ctx,
+      program,
+      translation,
+      location,
+      color,
+    })
   }
-  pub fn update(
-    &self,
-    callback: wasm_bindgen::prelude::Closure<dyn std::ops::FnMut(web_sys::WheelEvent)>,
-  ) -> Result<i32, JsValue>{
-    &self
-      .canvas
-      .add_event_listener_with_callback("wheel", callback.as_ref().unchecked_ref())?;
-    callback.forget();
-    Ok(1)
+
+  pub fn draw(&self, layout: &ImageLayout, square: &Square, x: f32, y: f32, z: f32) -> Result<i32, JsValue> {
+    let ctx = &self.ctx;
+    let translation = &self.translation;
+    let color = self.color;
+    let vertices_layout = &layout.vertices;
+    let vertices_square = &square.vertices;
+    let colors_square = &square.colors;
+    let indices_square = &square.indices;
+    let _draw_layout= draw_layout(ctx, translation, vertices_layout, x, y, z);
+    let _draw_square = draw_square(ctx ,translation, vertices_square, x, y, z, colors_square,  indices_square, color );
+    Ok(3)
   }
 }
 
