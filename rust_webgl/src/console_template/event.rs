@@ -3,7 +3,6 @@ use crate::Canvas;
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsValue;
 use std::rc::Rc;
-// use web_sys::console;
 
 use super::{draw_layout::ImageLayout, draw_square::Square};
 pub struct Movement {

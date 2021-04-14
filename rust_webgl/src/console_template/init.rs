@@ -88,7 +88,6 @@ impl Canvas {
       location,
       color,
     })
-    // Ok(Canvas { canvas, ctx})
   }
 
   pub fn draw(&self, layout: &ImageLayout, square: &Square, x: f32, y: f32, z: f32) -> Result<i32, JsValue> {
