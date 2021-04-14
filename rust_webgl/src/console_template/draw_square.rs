@@ -1,6 +1,4 @@
-use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
-use web_sys::console;
 use web_sys::WebGlRenderingContext;
 pub struct Square {
   pub vertices: Vec<f32>,
@@ -159,14 +157,4 @@ pub fn draw_square(ctx: &web_sys::WebGlRenderingContext,translation: &web_sys::W
     0,
   );
   Ok(1)
-}
-
-pub fn draw_square(ctx:& WebGlRenderingContext, x:f32, y:f32, z:f32, translation: web_sys::WebGlUniformLocation, indices:[u16;6]) {
-  ctx.uniform4f(Some(&translation), x, y, z, 0.0);
-  ctx.draw_elements_with_i32(
-    WebGlRenderingContext::TRIANGLES,
-    indices.len() as i32,
-    WebGlRenderingContext::UNSIGNED_SHORT,
-    0,
-  );
 }

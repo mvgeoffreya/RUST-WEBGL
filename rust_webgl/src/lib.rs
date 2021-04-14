@@ -1,6 +1,5 @@
 extern crate wasm_bindgen;
 extern crate web_sys;
-use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 mod console_template;
 use console_template::{

@@ -5,10 +5,6 @@ use wasm_bindgen::JsValue;
 use std::rc::Rc;
 
 use super::{draw_layout::ImageLayout, draw_square::Square};
-pub struct Movement {
-  pub x: f32,
-  pub y: f32,
-}
 
 pub fn on_wheel_event(
   canvas: Canvas,
@@ -17,7 +13,7 @@ pub fn on_wheel_event(
   // scale: i32,z
   init:ImageLayout,
   square: Square,
-) -> Result<Movement, JsValue> {
+) -> Result<i32, JsValue> {
   let canvas = Rc::new(canvas);
   let canvas1 = canvas.clone();
   let wheel_callback = Closure::wrap(Box::new(move |event: web_sys::WheelEvent| {
@@ -31,3 +27,5 @@ pub fn on_wheel_event(
     wheel_callback.as_ref().unchecked_ref()
   )?;
   wheel_callback.forget();
+  Ok(1)
+}

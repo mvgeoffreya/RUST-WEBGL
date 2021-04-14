@@ -1,6 +1,4 @@
-use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
-use web_sys::console;
 use web_sys::WebGlRenderingContext;
 pub struct ImageLayout {
   pub vertices: Vec<f32>,
