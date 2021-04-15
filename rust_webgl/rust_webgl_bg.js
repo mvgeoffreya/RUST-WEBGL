@@ -410,7 +410,7 @@ export const __wbindgen_memory = function() {
     return addHeapObject(ret);
 };
 
-export const __wbindgen_closure_wrapper222 = function(arg0, arg1, arg2) {
+export const __wbindgen_closure_wrapper270 = function(arg0, arg1, arg2) {
     var ret = makeMutClosure(arg0, arg1, 6, __wbg_adapter_20);
     return addHeapObject(ret);
 };

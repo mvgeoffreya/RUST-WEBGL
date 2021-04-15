@@ -1,3 +1,4 @@
+use crate::Payload;
 use crate::console_template::draw_square::draw_square;
 use crate::console_template::draw_layout::draw_layout;
 use wasm_bindgen::prelude::*;
@@ -6,7 +7,7 @@ use web_sys::HtmlCanvasElement;
 use web_sys::{WebGlProgram, WebGlRenderingContext, WebGlShader};
 
 use super::draw_layout::ImageLayout;
-use super::draw_square::Square;
+// use super::draw_square::Square;
 pub struct Canvas {
   pub canvas: HtmlCanvasElement,
   pub ctx: WebGlRenderingContext,
@@ -90,7 +91,7 @@ impl Canvas {
     })
   }
 
-  pub fn draw(&self, layout: &ImageLayout, square: &Square, x: f32, y: f32, z: f32) -> Result<i32, JsValue> {
+  pub fn draw(&self, layout: &ImageLayout, square: &Payload, x: f32, y: f32, z: f32) -> Result<i32, JsValue> {
     let ctx = &self.ctx;
     let translation = &self.translation;
     let color = self.color;
