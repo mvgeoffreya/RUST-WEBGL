@@ -1,6 +1,6 @@
-use crate::Payload;
-use crate::console_template::draw_square::draw_square;
 use crate::console_template::draw_layout::draw_layout;
+use crate::console_template::draw_square::draw_square;
+use crate::Payload;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlCanvasElement;
@@ -8,6 +8,7 @@ use web_sys::{WebGlProgram, WebGlRenderingContext, WebGlShader};
 
 use super::draw_layout::ImageLayout;
 // use super::draw_square::Square;
+#[derive(Debug,Clone)]
 pub struct Canvas {
   pub canvas: HtmlCanvasElement,
   pub ctx: WebGlRenderingContext,
@@ -18,7 +19,7 @@ pub struct Canvas {
 }
 
 impl Canvas {
-  pub fn new(attr_id: &str) -> Result<Canvas, JsValue> {
+  pub fn new(attr_id: &str) -> Result<Self, JsValue> {
     let document = web_sys::window().unwrap().document().unwrap();
     let canvas = document.get_element_by_id(attr_id).unwrap();
     let canvas = canvas.dyn_into::<web_sys::HtmlCanvasElement>()?;
@@ -81,7 +82,7 @@ impl Canvas {
       .ok_or("failed to get uniform location")?;
     ctx.clear_color(1.0, 1.0, 1.0, 1.0);
     ctx.clear(WebGlRenderingContext::COLOR_BUFFER_BIT);
-    Ok(Canvas {
+    Ok(Self {
       canvas,
       ctx,
       program,
@@ -91,7 +92,14 @@ impl Canvas {
     })
   }
 
-  pub fn draw(&self, layout: &ImageLayout, square: &Payload, x: f32, y: f32, z: f32) -> Result<i32, JsValue> {
+  pub fn draw(
+    &self,
+    layout: &ImageLayout,
+    square: &Payload,
+    x: f32,
+    y: f32,
+    z: f32,
+  ) -> Result<i32, JsValue> {
     let ctx = &self.ctx;
     let translation = &self.translation;
     let color = self.color;
@@ -99,8 +107,18 @@ impl Canvas {
     let vertices_square = &square.vertices;
     let colors_square = &square.colors;
     let indices_square = &square.indices;
-    let _draw_layout= draw_layout(ctx, translation, vertices_layout, x, y, z);
-    let _draw_square = draw_square(ctx ,translation, vertices_square, x, y, z, colors_square,  indices_square, color );
+    let _draw_layout = draw_layout(ctx, translation, vertices_layout, x, y, z);
+    let _draw_square = draw_square(
+      ctx,
+      translation,
+      vertices_square,
+      x,
+      y,
+      z,
+      colors_square,
+      indices_square,
+      color,
+    );
     Ok(3)
   }
 }
